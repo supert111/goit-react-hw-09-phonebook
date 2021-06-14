@@ -1,10 +1,10 @@
-import React, { Component, Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useEffect } from 'react';
 import { Switch } from 'react-router-dom';
 import AppBar from './components/AppBar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import routes from './components/routes';
 import {authOperations} from './redux/auth';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import PrivateRoute from "./components/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
 import Spinner from 'react-bootstrap/Spinner';
@@ -18,13 +18,13 @@ const NotFoundView = lazy(() =>
     import('./views/NotFoundView' /* webpackChunkName: "page-404-view" */)
 );
 
-class App extends Component { 
+export default function App () { 
+    const dispatch = useDispatch();
 
-    componentDidMount() {
-        this.props.onGetCurretnUser();
-    }
+    useEffect(() => {
+        dispatch(authOperations.getCurrentUser());
+    }, [dispatch]);
 
-    render() {
         return (
             <>
                 <AppBar />
@@ -44,11 +44,4 @@ class App extends Component {
                 </Suspense>
             </>
         )
-    }
 }
-  
-const mapDispatchToProps = {
-    onGetCurretnUser: authOperations.getCurrentUser,
-  };
-
-export default connect(null, mapDispatchToProps)(App);

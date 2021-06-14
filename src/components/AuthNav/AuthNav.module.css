@@ -1,0 +1,14 @@
+.nav_link {
+    font-size: 15px;
+    margin: 0 0 0 10px;
+    text-decoration-line: none;
+}
+
+.nav_link_active {
+    color: fuchsia;
+    text-decoration-line: underline;
+}
+
+.Registr{
+    margin-left: auto;
+}

@@ -1,0 +1,18 @@
+.hero {
+    background-image: url('../../images/leon.jpg');
+    width: 100vw;
+    height: 100vh;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.hero_title {
+    text-align: center;
+    color: midnightblue;
+    padding: 5%;
+}
+
+.hero_name {
+    color: darkred;
+}

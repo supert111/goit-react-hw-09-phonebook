@@ -1,0 +1,10 @@
+.nav_link {
+    font-size: 20px;
+    margin: 0 0 0 10px;
+    text-decoration-line: none;
+}
+
+.nav_link_active {
+    color: brown;
+    text-decoration-line: underline;
+}

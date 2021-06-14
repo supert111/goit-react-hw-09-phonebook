@@ -1,0 +1,13 @@
+.title {
+    font-size: 15px;
+    font-weight: 500;
+    margin: 0 10px 0 10px;
+}
+
+.Login{
+    margin-left: auto;
+}
+
+.login_name {
+    color: orangered;
+}

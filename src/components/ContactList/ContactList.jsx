@@ -1,10 +1,13 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './ContactList.module.css';
 import { deleteContact, searchFilter } from '../../redux/contacts';
 
-const ContactList = ({ phoneBook, onDeleteContact }) => {
+export default function ContactList () {
+  const dispatch = useDispatch();
+  const onDeleteContact = (id) => dispatch(deleteContact(id));
+  const phoneBook = useSelector(searchFilter);
   return (
       <ul>
         {phoneBook.map(nameContact => (
@@ -26,13 +29,3 @@ ContactList.propTypes = {
     ),
     onDeleteContact: PropTypes.func.isRequired,
 };
-
-const mapStateToProps = (state) => ({
-  phoneBook: searchFilter(state),
-})
-
-const mapDispatchProps = dispatch => ({
-  onDeleteContact: (id) => dispatch(deleteContact(id)),
-})
-
-export default connect(mapStateToProps, mapDispatchProps)(ContactList);

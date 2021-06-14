@@ -1,9 +1,12 @@
 import React from "react";
 import styles from "./Filter.module.css"
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {searchByFilter} from '../../redux/contacts';
 
-const Filter = ({onChange}) => {
+export default function Filter () {
+    const dispatch = useDispatch();
+    const onChange = e => dispatch(searchByFilter(e.target.value));
+    
     return (
         <label>Find contacts by name
             <input className={styles.input_display}
@@ -17,10 +20,3 @@ const Filter = ({onChange}) => {
         </label>
     )
 }
-
-
-const mapDispatchToProps = dispatch => ({
-    onChange: (e) => dispatch(searchByFilter(e.target.value)),
-})
-
-export default connect(null, mapDispatchToProps)(Filter);

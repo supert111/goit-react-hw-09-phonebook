@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { connect } from 'react-redux';
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from 'react-redux';
 import Container from '../components/Container';
 import ContactForm from "../components/ContactForm";
 import ContactList from "../components/ContactList";
@@ -7,20 +7,15 @@ import Filter from "../components/Filter";
 import { fetchContacts, getIsLoading } from '../redux/contacts';
 import styles from "../../src/App.module.css";
 
-class ContactsView extends Component { 
+export default function ContactsView () { 
+    const dispatch = useDispatch();
 
-    state = {};
+    const isLoading = useSelector(getIsLoading);
 
-    componentDidMount() {
-        this.props.fetchContact();
-    }
+    useEffect(() => {
+        dispatch(fetchContacts())
+    }, [dispatch]);
 
-    handleFilter = (element) => {
-        const { value } = element.target;
-        this.setState ({ filter: value });  
-    };
-
-    render() {
         return (
             <Container>    
                 <div className={styles.wrapper}>
@@ -28,20 +23,9 @@ class ContactsView extends Component {
                     <ContactForm /> 
                     <h2 className={styles.title_Contacts}>Contacts</h2>
                     <Filter /> 
-                    {this.props.isLoading && <h1>Loading...</h1>}
+                    {isLoading && <h1>Loading...</h1>}
                     <ContactList />
                 </div>
             </Container>          
         )
     }
-}
-  
-const mapStateToProps = state => ({
-    isLoading: getIsLoading(state),
-});
-
-const mapDispatchToProps = dispatch => ({
-    fetchContact: () => dispatch(fetchContacts()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContactsView);

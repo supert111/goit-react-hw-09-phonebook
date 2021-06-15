@@ -1,6 +1,5 @@
-import PropTypes from 'prop-types';
-import React, { Component } from "react";
-import { connect } from 'react-redux';
+import React, { useState } from "react";
+import { useDispatch } from 'react-redux';
 import styles from "./ContactForm.module.css";
 import shortid from 'shortid';
 import { addContact } from '../../redux/contacts';
@@ -8,28 +7,35 @@ import { addContact } from '../../redux/contacts';
 const nameInputId = shortid.generate();
 const phoneInputId = shortid.generate();
 
-class ContactForm extends Component { 
-    state = {
-        name: '',
-        number: '',
-    };
-
-    handleChange = (element) => {
+export default function ContactForm () { 
+    const [name, setName] = useState('');
+    const [number, setNumber] = useState('');
+    
+    const dispatch = useDispatch();
+    
+    const handleChange = (element) => {
         const { name, value } = element.target;
-        this.setState ({ [name]: value }); 
+
+        switch (name) {
+            case 'name': setName(value);
+                break;
+            case 'number': setNumber(value);
+                break;
+            default: console.warn(`Тип поля name - ${name} не обрабатывается`);
+        }
     };
 
-    handleSubmit = (el) => {
+    const handleSubmit = (el) => {
         el.preventDefault();
-        this.props.onSubmit(this.state);
-        this.setState({ name: '', number: '' });
+        
+        dispatch(addContact({name, number}));
+
+        setName('');
+        setNumber('');
     }
 
-    render() {
-        const { name, number } = this.state;
-        return (
-            
-                <form className={styles.wrapper} onSubmit={this.handleSubmit}>
+        return (           
+                <form className={styles.wrapper} onSubmit={handleSubmit}>
                     <label htmlFor={nameInputId}>Name
                         <input className={styles.input_display}
                             type="text"
@@ -39,7 +45,7 @@ class ContactForm extends Component {
                             title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
                             required
                             id={nameInputId}
-                            onChange={this.handleChange}
+                            onChange={handleChange}
                         />
                     </label>
                     <label className={styles.label_block} htmlFor={phoneInputId}>Number
@@ -51,22 +57,11 @@ class ContactForm extends Component {
                             title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
                             required
                             id={phoneInputId}
-                            onChange={this.handleChange}
+                            onChange={handleChange}
                         />
                     </label>
                     <button className={styles.button_prime} type="submit" >Add contact</button>
                 </form>            
             
         )
-    }
 }
-
-ContactForm.propTypes = {
-    onSubmit: PropTypes.func.isRequired,
-  };
-
-const mapDispatchToProps = dispatch => ({
-    onSubmit: (name, number) => dispatch(addContact( name, number )),
-})
-
-export default connect(null, mapDispatchToProps)(ContactForm);

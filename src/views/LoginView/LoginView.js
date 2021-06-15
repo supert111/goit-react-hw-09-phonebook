@@ -1,34 +1,40 @@
-import { Component } from "react";
-import { connect } from 'react-redux';
+import { useState } from "react";
+import { useDispatch } from 'react-redux';
 import { Form, Button } from 'react-bootstrap';
 import Container from '../../components/Container';
 import styles from './LoginView.module.css';
 import { authOperations } from '../../redux/auth';
 
-class LoginView extends Component {
-    state = {
-        email: '',
-        password: '',
-    };
 
-    handleChange = ({ target: { name, value } }) => {
-        this.setState({ [name]: value });
+export default function LoginView () {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const dispatch = useDispatch();
+
+    const handleChange = ({ target: { name, value } }) => {
+        switch (name) {
+            case 'email': setEmail(value);
+                break;
+            case 'password': setPassword(value);
+                break;
+            default: return;
+        }
     };
     
-    handleSubmit = e => {
+    const handleSubmit = e => {
         e.preventDefault();
     
-        this.props.onLogin(this.state);
-    
-        this.setState({ name: '', email: '', password: '' });
+        dispatch(authOperations.logIn({email, password}));
+        
+        setEmail('');
+        setPassword('');
     };
 
-    render() {
-        const { email, password } = this.state;
         return (
             <Container>
                 <h1 className={styles.title_login}>Please log in</h1>
-                <Form className={styles.form} onSubmit={this.handleSubmit}>
+                <Form className={styles.form} onSubmit={handleSubmit}>
 
                     <Form.Group className={styles.form_group} controlId="formBasicEmail">
                         <Form.Label className={styles.form_label}>Email address</Form.Label>
@@ -37,7 +43,7 @@ class LoginView extends Component {
                             placeholder="Enter email" 
                             name="email"
                             value={email}
-                            onChange={this.handleChange}/>
+                            onChange={handleChange}/>
                         <Form.Text className="text-muted">
                             Please write down your registered email.
                         </Form.Text>
@@ -50,7 +56,7 @@ class LoginView extends Component {
                             placeholder="Password" 
                             name="password"
                             value={password}
-                            onChange={this.handleChange}/>
+                            onChange={handleChange}/>
                     </Form.Group>
 
                     <Button variant="primary" type="submit">
@@ -60,12 +66,3 @@ class LoginView extends Component {
             </Container>
         )
     }
-
-}
-
-const mapDispatchToProps = {
-    onLogin: authOperations.logIn,
-}
-
-
-export default connect(null, mapDispatchToProps)(LoginView);

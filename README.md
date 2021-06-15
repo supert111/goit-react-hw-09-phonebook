@@ -21,10 +21,10 @@
 
 - Создай репозиторий `goit-react-hw-09-feedback`.
 - Выполни рефакторинг кода задания
-  [«Виджет отзывов»](../homework-02/feedback/README.md) на хуки.
+  [«Виджет отзывов»](https://github.com/goitacademy/react-homework/blob/master/homework-02/feedback/README.md) на хуки.
 
 ### Поиск изображений
 
 - Создай репозиторий `goit-react-hw-09-images`.
 - Выполни рефакторинг кода задания
-  [«Поиск изображений»](../homework-03/image-finder/README.md) на хуки.
+  [«Поиск изображений»](https://github.com/goitacademy/react-homework/blob/master/homework-03/image-finder/README.md) на хуки.

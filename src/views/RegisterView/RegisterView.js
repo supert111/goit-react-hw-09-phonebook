@@ -5,33 +5,39 @@ import Container from '../../components/Container';
 import styles from './RegisterView.module.css';
 import { authOperations } from '../../redux/auth';
 
+const initialState = {name: '', email: '', password: ''}
+
 export default function RegisterView () {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [userRegister, setUserRegister] = useState(initialState);
+    // const [name, setName] = useState('');
+    // const [email, setEmail] = useState('');
+    // const [password, setPassword] = useState('');
 
     const dispatch = useDispatch();
 
     const handleChange = ({ target: { name, value } }) => {
-        switch (name) {
-            case 'name': setName(value);
-                break;
-            case 'email': setEmail(value);
-                break;
-            case 'password': setPassword(value);
-                break;
-            default: return;
-        }
+        setUserRegister(prev => ({...prev, [name]: value}));
+        // switch (name) {
+        //     case 'name': setName(value);
+        //         break;
+        //     case 'email': setEmail(value);
+        //         break;
+        //     case 'password': setPassword(value);
+        //         break;
+        //     default: return;
+        // }
     };
         
     const handleSubmit = e => {
         e.preventDefault();
         
-        dispatch(authOperations.register({name, email, password}))
+        dispatch(authOperations.register(userRegister));
+        // dispatch(authOperations.register({name, email, password}));
         
-        setName('');
-        setEmail('');
-        setPassword('');
+        setUserRegister(initialState);
+        // setName('');
+        // setEmail('');
+        // setPassword('');
     };
         
         return (

@@ -5,30 +5,37 @@ import Container from '../../components/Container';
 import styles from './LoginView.module.css';
 import { authOperations } from '../../redux/auth';
 
+const initialState = {email: '', password: ''}
 
 export default function LoginView () {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [user, setUser] = useState(initialState);
+    // const [email, setEmail] = useState('');
+    // const [password, setPassword] = useState('');
 
     const dispatch = useDispatch();
 
-    const handleChange = ({ target: { name, value } }) => {
-        switch (name) {
-            case 'email': setEmail(value);
-                break;
-            case 'password': setPassword(value);
-                break;
-            default: return;
-        }
+    const handleChange = (element) => {
+        const { name, value } = element.target;
+        
+        setUser(prev => ({...prev, [name]: value}));
+        // switch (name) {
+        //     case 'email': setEmail(value);
+        //         break;
+        //     case 'password': setPassword(value);
+        //         break;
+        //     default: return;
+        // }
     };
     
     const handleSubmit = e => {
         e.preventDefault();
-    
-        dispatch(authOperations.logIn({email, password}));
         
-        setEmail('');
-        setPassword('');
+        dispatch(authOperations.logIn(user));
+        // dispatch(authOperations.logIn({email, password}));
+        
+        setUser(initialState);
+        // setEmail('');
+        // setPassword('');
     };
 
         return (
@@ -42,7 +49,7 @@ export default function LoginView () {
                             type="email" 
                             placeholder="Enter email" 
                             name="email"
-                            value={email}
+                            value={user.email}
                             onChange={handleChange}/>
                         <Form.Text className="text-muted">
                             Please write down your registered email.
@@ -55,7 +62,7 @@ export default function LoginView () {
                             type="password" 
                             placeholder="Password" 
                             name="password"
-                            value={password}
+                            value={user.password}
                             onChange={handleChange}/>
                     </Form.Group>
 

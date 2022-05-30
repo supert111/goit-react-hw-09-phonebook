@@ -8,6 +8,7 @@ import { authOperations } from '../../redux/auth';
 const initialState = {name: '', email: '', password: ''}
 
 export default function RegisterView () {
+    const [errors, setErrors] = useState({});
     const [userRegister, setUserRegister] = useState(initialState);
     // const [name, setName] = useState('');
     // const [email, setEmail] = useState('');
@@ -27,10 +28,30 @@ export default function RegisterView () {
         //     default: return;
         // }
     };
-        
+    // if (!!errors[name]) {
+    //     setErrors({...errors, [name]: null})
+    // }
+    
+    const validateForm = () => {
+        const { name, email, password } = userRegister;
+        const newErrors = {};
+
+        if (!name || name === '') newErrors.name = "Please enter your name";
+        if (!email || email === '') newErrors.email = "Please enter your email";
+        if (!password || password === '') newErrors.password = "Please enter your password, min 7 characters";
+        else if (password.length < 6 ) newErrors.password = "Minimum password length 7 characters";
+
+        return newErrors;
+    }
+    
     const handleSubmit = e => {
         e.preventDefault();
         
+        const formErrors = validateForm();
+        if (Object.keys(formErrors).length > 0) {
+            setErrors(formErrors)
+        }
+
         dispatch(authOperations.register(userRegister));
         // dispatch(authOperations.register({name, email, password}));
         
@@ -49,12 +70,14 @@ export default function RegisterView () {
                         <Form.Control 
                             type="text" 
                             name="name"
+                            value={userRegister.name}
                             placeholder="Enter name" 
-                            onChange={handleChange}/>
+                            onChange={handleChange}
+                            isInvalid={!!errors.name}/>
+                        <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
                         <Form.Text className="text-muted" >
                             We'll never share your name with anyone else.
                         </Form.Text>
-                    
                     </Form.Group>
 
                     <Form.Group className={styles.form_group} controlId="formBasicEmail" >
@@ -62,8 +85,11 @@ export default function RegisterView () {
                         <Form.Control 
                             type="email" 
                             name="email"
+                            value={userRegister.email}
                             placeholder="Enter email" 
-                            onChange={handleChange}/>
+                            onChange={handleChange}
+                            isInvalid={!!errors.email}/>
+                        <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
                         <Form.Text className="text-muted">
                             We'll never share your email with anyone else.
                         </Form.Text>
@@ -74,8 +100,14 @@ export default function RegisterView () {
                         <Form.Control 
                             type="password"
                             name="password"
+                            value={userRegister.password}
                             placeholder="Password" 
-                            onChange={handleChange}/>
+                            onChange={handleChange}
+                            isInvalid={!!errors.password}/>
+                        <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+                        <Form.Text className="text-muted">
+                            Minimum password length 7 characters.
+                        </Form.Text>
                     </Form.Group>
 
                     <Button variant="primary" type="submit">

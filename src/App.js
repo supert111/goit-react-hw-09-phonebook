@@ -26,7 +26,7 @@ export default function App () {
     }, [dispatch]);
 
         return (
-            <>
+            <React.Fragment>
                 <AppBar />
             
                 <Suspense fallback={<div className={styles.spinner_style}>
@@ -42,6 +42,6 @@ export default function App () {
                         <PublicRoute component={NotFoundView} />
                     </Switch>
                 </Suspense>
-            </>
+            </React.Fragment>
         )
 }

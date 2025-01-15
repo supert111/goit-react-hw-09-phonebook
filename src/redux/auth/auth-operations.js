@@ -2,7 +2,7 @@ import axios from 'axios';
 import authActions  from './auth-actions';
 
 //axios.defaults.baseURL = 'https://connections-api.herokuapp.com';
-axios.defaults.baseURL = 'https://your-app-name.onrender.com'; // тут буде ваш унікальний URL після деплою
+axios.defaults.baseURL = 'https://phonebook-zaqr.onrender.com/'; // тут буде ваш унікальний URL після деплою
 
 export const token = {
   set(token) {

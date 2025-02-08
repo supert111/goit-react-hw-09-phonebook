@@ -1,86 +1,63 @@
 import axios from 'axios';
-import authActions  from './auth-actions';
+import authActions from './auth-actions';
 
-//axios.defaults.baseURL = 'https://connections-api.herokuapp.com';
-axios.defaults.baseURL = 'https://phonebook-backend-o2ud.onrender.com'; // тут буде ваш унікальний URL після деплою
+axios.defaults.baseURL = 'https://phonebook-backend-o2ud.onrender.com';
 
 export const token = {
   set(token) {
-    axios.defaults.headers.common.Authorization = `Bearer ${token}`; //Bearer - носитель
+    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
   },
   unset() {
     axios.defaults.headers.common.Authorization = '';
   },
 };
 
-/*
- * POST @ /users/signup
- * body { name, email, password }
- *
- * После успешной регистрации добавляем токен в HTTP-заголовок
- */
+// Реєстрація
 export const register = credentials => async dispatch => {
-    dispatch(authActions.registerRequest());
+  dispatch(authActions.registerRequest());
 
-    try {
-        const response = await axios.post('/users/signup', credentials);
-        
-        token.set(response.data.token);
-        dispatch(authActions.registerSuccess(response.data));
-    } catch (error) {
-        dispatch(authActions.registerError(error.message));
-    }
+  try {
+    const response = await axios.post('/users/signup', credentials);
+    token.set(response.data.token);
+    dispatch(authActions.registerSuccess(response.data));
+  } catch (error) {
+    dispatch(
+      authActions.registerError(error.response?.data?.message || error.message),
+    );
+  }
 };
 
-/*
- * POST @ /users/login
- * body:
- *    { email, password }
- *
- * После успешного логина добавляем токен в HTTP-заголовок
- */
+// Логін
 const logIn = credentials => async dispatch => {
   dispatch(authActions.loginRequest());
 
   try {
     const response = await axios.post('/users/login', credentials);
-
     token.set(response.data.token);
     dispatch(authActions.loginSuccess(response.data));
   } catch (error) {
-    dispatch(authActions.loginError(error.message));
+    dispatch(
+      authActions.loginError(error.response?.data?.message || error.message),
+    );
   }
 };
 
-/*
- * POST @ /users/logout
- * headers:
- *    Authorization: Bearer token
- *
- * 1. После успешного логаута, удаляем токен из HTTP-заголовка
- */
+// Логаут
 const logOut = () => async dispatch => {
   dispatch(authActions.logoutRequest());
 
   try {
     await axios.post('/users/logout');
-
     token.unset();
     dispatch(authActions.logoutSuccess());
   } catch (error) {
-    dispatch(authActions.logoutError(error.message));
+    dispatch(
+      authActions.logoutError(error.response?.data?.message || error.message),
+    );
   }
 };
 
-/*
- * GET @ /users/current
- * headers:
- *    Authorization: Bearer token
- *
- * 1. Забираем токен из стейта через getState()
- * 2. Если токена нет, выходим не выполняя никаких операций
- * 3. Если токен есть, добавляет его в HTTP-заголовок и выполянем операцию
- */
+// Поточний користувач
 const getCurrentUser = () => async (dispatch, getState) => {
   const {
     auth: { token: persistedToken },
@@ -95,12 +72,14 @@ const getCurrentUser = () => async (dispatch, getState) => {
 
   try {
     const response = await axios.get('/users/current');
-
     dispatch(authActions.getCurrentUserSuccess(response.data));
   } catch (error) {
-    dispatch(authActions.getCurrentUserError(error.message));
+    dispatch(
+      authActions.getCurrentUserError(
+        error.response?.data?.message || error.message,
+      ),
+    );
   }
 };
 
 export default { register, logOut, logIn, getCurrentUser };
-

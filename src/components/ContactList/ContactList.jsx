@@ -58,10 +58,13 @@ export default function ContactList() {
 
   const onDeleteContact = async id => {
     try {
-      await dispatch(deleteContact(id)).unwrap();
-      // Можна додати повідомлення про успішне видалення
+      const result = await dispatch(deleteContact(id));
+      if (deleteContact.fulfilled.match(result)) {
+        console.log('Contact deleted successfully. ID:', result.payload);
+      } else {
+        console.error('Failed to delete contact:', result.error);
+      }
     } catch (error) {
-      // Обробка помилки
       console.error('Failed to delete contact:', error);
     }
   };
@@ -73,12 +76,12 @@ export default function ContactList() {
   return (
     <ul>
       {phoneBook.map(nameContact => (
-        <li className={styles.contact} key={nameContact._id}>
+        <li className={styles.contact} key={nameContact._id || nameContact.id}>
           {nameContact.name}: {nameContact.number}
           <button
             className={styles.button}
             type="button"
-            onClick={() => onDeleteContact(nameContact._id)}
+            onClick={() => onDeleteContact(nameContact._id || nameContact.id)}
             disabled={isLoading}
           >
             {isLoading ? 'Deleting...' : 'Delete'}
@@ -92,9 +95,10 @@ export default function ContactList() {
 ContactList.propTypes = {
   phoneBook: PropTypes.arrayOf(
     PropTypes.shape({
-      _id: PropTypes.string.isRequired, // Змінено з id на _id
+      _id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
       number: PropTypes.string.isRequired,
     }),
   ),
+  isLoading: PropTypes.bool, // Додано
 };

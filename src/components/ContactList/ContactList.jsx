@@ -56,14 +56,15 @@ export default function ContactList() {
   const isLoading = useSelector(getIsLoading);
   const error = useSelector(state => state.state.error);
 
-  const onDeleteContact = async id => {
-    const result = await dispatch(deleteContact(id));
-    if (deleteContact.fulfilled.match(result)) {
-      console.log('Contact deleted successfully. ID:', result.payload);
-    } else {
-      console.error('Failed to delete contact:', result.error);
-    }
-  };
+ const onDeleteContact = id => {
+   dispatch(deleteContact(id))
+     .then(() => {
+       console.log('Contact deleted successfully. ID:', id);
+     })
+     .catch(error => {
+       console.error('Failed to delete contact:', error);
+     });
+ };
 
   if (error) {
     return <div>Error: {error}</div>;

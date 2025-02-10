@@ -7,21 +7,20 @@ import { deleteContact, searchFilter } from '../../redux/contacts';
 export default function ContactList () {
   const dispatch = useDispatch();
   const onDeleteContact = id => {
-    console.log('Deleting contact with id:', id);
     dispatch(deleteContact(id));
   };
   const phoneBook = useSelector(searchFilter);
   // Перевірка даних
-  console.log('PhoneBook data:', phoneBook);
+
   return (
     <ul>
       {phoneBook.map(nameContact => (
-        <li className={styles.contact} key={nameContact.id}>
+        <li className={styles.contact} key={nameContact._id}>
           {nameContact.name}: {nameContact.number}
           <button
             className={styles.button}
             type="button"
-            onClick={() => onDeleteContact(nameContact.id)}
+            onClick={() => onDeleteContact(nameContact._id)}
           >
             Delete
           </button>

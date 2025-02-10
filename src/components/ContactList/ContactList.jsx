@@ -44,12 +44,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './ContactList.module.css';
-import { deleteContact, searchFilter } from '../../redux/contacts';
+import {
+  deleteContact,
+  searchFilter,
+  getIsLoading,
+} from '../../redux/contacts';
 
 export default function ContactList() {
   const dispatch = useDispatch();
   const phoneBook = useSelector(searchFilter);
-  const isLoading = useSelector(state => state.contacts.isLoading);
+  const isLoading = useSelector(getIsLoading);
   const error = useSelector(state => state.contacts.error);
 
   const onDeleteContact = async id => {

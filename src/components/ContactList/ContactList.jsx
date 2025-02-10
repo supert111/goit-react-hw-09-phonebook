@@ -54,7 +54,7 @@ export default function ContactList() {
   const dispatch = useDispatch();
   const phoneBook = useSelector(searchFilter);
   const isLoading = useSelector(getIsLoading);
-  const error = useSelector(state => state.contacts.error);
+  const error = useSelector(state => state.state.error);
 
   const onDeleteContact = async id => {
     try {

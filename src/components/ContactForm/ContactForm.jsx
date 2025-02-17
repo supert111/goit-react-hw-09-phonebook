@@ -40,34 +40,41 @@ export default function ContactForm () {
         // setNumber('');
     }
 
-        return (           
-                <form className={styles.wrapper} onSubmit={handleSubmit}>
-                    <label htmlFor={nameInputId}>Name
-                        <input className={styles.input_display}
-                            type="text"
-                            name="name"
-                            value={userContact.name}
-                            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-                            title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
-                            required
-                            id={nameInputId}
-                            onChange={handleChange}
-                        />
-                    </label>
-                    <label className={styles.label_block} htmlFor={phoneInputId}>Number
-                        <input className={styles.input_display}
-                            type="tel"
-                            name="number"
-                            value={userContact.number}
-                            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-                            title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
-                            required
-                            id={phoneInputId}
-                            onChange={handleChange}
-                        />
-                    </label>
-                    <button className={styles.button_prime} type="submit" >Add contact</button>
-                </form>            
-            
-        )
+        return (
+          <form className={styles.wrapper} onSubmit={handleSubmit}>
+            <label htmlFor={nameInputId}>
+              Name
+              <input
+                className={styles.input_display}
+                type="text"
+                name="name"
+                value={userContact.name}
+                pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+                title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
+                required
+                id={nameInputId}
+                onChange={handleChange}
+                maxLength={16}
+              />
+            </label>
+            <label className={styles.label_block} htmlFor={phoneInputId}>
+              Number
+              <input
+                className={styles.input_display}
+                type="tel"
+                name="number"
+                value={userContact.number}
+                pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+                title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
+                required
+                id={phoneInputId}
+                onChange={handleChange}
+                maxLength={13}
+              />
+            </label>
+            <button className={styles.button_prime} type="submit">
+              Add contact
+            </button>
+          </form>
+        );
 }

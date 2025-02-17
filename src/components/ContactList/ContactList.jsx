@@ -65,10 +65,12 @@ export default function ContactList() {
   }
 
   return (
-    <ul>
+    <ul className={styles.list}>
       {phoneBook.map(nameContact => (
         <li className={styles.contact} key={nameContact._id || nameContact.id}>
-          {nameContact.name}: {nameContact.number}
+          <span>
+            {nameContact.name}: {nameContact.number}
+          </span>
           <button
             className={styles.button}
             type="button"
